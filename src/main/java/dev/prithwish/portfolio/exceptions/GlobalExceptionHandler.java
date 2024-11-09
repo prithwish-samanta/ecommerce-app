@@ -7,7 +7,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.View;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,12 +14,6 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private final View error;
-
-    public GlobalExceptionHandler(View error) {
-        this.error = error;
-    }
-
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
         return ResponseEntity
@@ -62,6 +55,19 @@ public class GlobalExceptionHandler {
                         .message(messageMap.toString())
                         .status(400)
                         .error("Bad Request")
+                        .build()
+                );
+    }
+
+    @ExceptionHandler(StorageException.class)
+    public ResponseEntity<ErrorResponse> handleStorageException(StorageException ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.builder()
+                        .timestamp(LocalDateTime.now())
+                        .message(ex.getMessage())
+                        .status(500)
+                        .error("Internal Server Error")
                         .build()
                 );
     }

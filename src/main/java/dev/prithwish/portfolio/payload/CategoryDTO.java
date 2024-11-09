@@ -1,17 +1,17 @@
 package dev.prithwish.portfolio.payload;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO {
     private Long categoryId;
-    @NotEmpty(message = "Category name cannot be empty")
-    @Length(min = 5, message = "Category name must have length of 5 or more")
+    @NotNull(message = "Category name cannot be null")
+    @Size(min = 5, message = "Category name must have length of 5 or more")
     private String categoryName;
 }
